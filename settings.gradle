@@ -1,0 +1,2 @@
+include ':app'
+rootProject.name = "paack_mobile_dev_quiz"

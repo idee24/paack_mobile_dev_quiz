@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/deliveryDetailsFragment">
+
+    <fragment
+        android:id="@+id/deliveryDetailsFragment"
+        android:name="com.example.paack_mobile_dev_quiz.fragments.DeliveryDetailsFragment"
+        android:label="fragment_delivery_details"
+        tools:layout="@layout/fragment_delivery_details" />
+    <fragment
+        android:id="@+id/deliveryListFragment"
+        android:name="com.example.paack_mobile_dev_quiz.fragments.DeliveryListFragment"
+        android:label="fragment_delivery_list"
+        tools:layout="@layout/fragment_delivery_list" >
+        <action
+            android:id="@+id/action_deliveryListFragment_to_deliveryDetailsFragment"
+            app:destination="@id/deliveryDetailsFragment"
+
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popExitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_right"/>
+    </fragment>
+</navigation>

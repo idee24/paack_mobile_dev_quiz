@@ -7,7 +7,8 @@ import android.view.Display
 /**
  *@Created by Yerimah on 3/12/2021.
  */
-object Constants {
+object  Constants {
 
+    const val LOCATION_REQUEST_CODE = 1004
     const val DELIVERY_ID_KEY = "delivery_id"
 }

@@ -23,7 +23,7 @@ import java.util.*
 /**
  *@Created by Yerimah on 3/12/2021.
  */
-class DeliveryUpdateService: Service() {
+class DeliveryUpdateService(): Service() {
 
     private val servicePackageName = "com.google.android.gms.location.sample.locationupdatesforegroundservice"
     private val channelId = "location_channel"
@@ -54,6 +54,7 @@ class DeliveryUpdateService: Service() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
+                println("DDLS Callback Initialized")
                 updateDelivery(locationResult.lastLocation)
             }
         }

@@ -2,13 +2,12 @@ package com.example.paack_mobile_dev_quiz.fragments
 
 import android.Manifest
 import android.app.NotificationManager
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.core.app.ActivityCompat
@@ -18,12 +17,13 @@ import com.example.paack_mobile_dev_quiz.Constants
 import com.example.paack_mobile_dev_quiz.MainActivity
 import com.example.paack_mobile_dev_quiz.R
 import com.example.paack_mobile_dev_quiz.networking.*
-import com.example.paack_mobile_dev_quiz.utils.DeliveryUpdateService
-import com.example.paack_mobile_dev_quiz.utils.bitmapDescriptorFromVector
-import com.example.paack_mobile_dev_quiz.utils.getFormattedDate
-import com.example.paack_mobile_dev_quiz.utils.getFormattedTime
+import com.example.paack_mobile_dev_quiz.utils.*
 import com.example.paack_mobile_dev_quiz.viewmodels.MainViewModel
 import com.example.paack_mobile_dev_quiz.viewmodels.MainViewModelFactory
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -62,6 +62,11 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
         mapView.getMapAsync(this)
         val deliveryId = arguments?.getInt(Constants.DELIVERY_ID_KEY)
         getDeliveryDetails(deliveryId ?: 0)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        displayLocationSettingsRequest()
     }
 
     private fun getDeliveryDetails(deliveryId: Int) {
@@ -107,10 +112,25 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
         addressTextView.text = delivery.address
 
         activeButton.setOnClickListener {
-            startDeliveryService()
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                    && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                startDeliveryService()
+            }
+            else {
+                requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,  Manifest.permission.ACCESS_COARSE_LOCATION), Constants.LOCATION_REQUEST_CODE)
+            }
         }
-
     }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if(requestCode == Constants.LOCATION_REQUEST_CODE) {
+                 mapView.getMapAsync(this)
+            }
+        }
+    }
+
 
     override fun onPause() {
         super.onPause()
@@ -125,6 +145,9 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             googleMap?.isMyLocationEnabled = true
+        }
+        else {
+            requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,  Manifest.permission.ACCESS_COARSE_LOCATION), Constants.LOCATION_REQUEST_CODE)
         }
     }
 
@@ -145,7 +168,6 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
     private fun startDeliveryService() {
         context.bindService(Intent(context, DeliveryUpdateService::class.java),
             serviceConnection, Context.BIND_AUTO_CREATE)
-        deliveryService?.requestLocationUpdates()
     }
 
     private fun stopService() {
@@ -156,5 +178,26 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
         deliveryService?.removeLocationUpdates()
         val manager = context.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
         manager.cancelAll()
+    }
+
+    private fun displayLocationSettingsRequest() {
+        val locationRequest = LocationRequest.create()
+        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+        locationRequest.interval = 500
+        locationRequest.fastestInterval = 100
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val client = LocationServices.getSettingsClient(context)
+        val task = client.checkLocationSettings(builder.build())
+        task.addOnFailureListener { locationException: java.lang.Exception? ->
+            if (locationException is ResolvableApiException) {
+                try {
+                    locationException.startResolutionForResult(context, Constants.LOCATION_REQUEST_CODE)
+                } catch (senderException: IntentSender.SendIntentException) {
+                    senderException.printStackTrace()
+                    showErrorMessage(context, "Please enable location setting to use your current address.",
+                            constraintLayout, "RETRY") {displayLocationSettingsRequest()}
+                }
+            }
+        }
     }
 }

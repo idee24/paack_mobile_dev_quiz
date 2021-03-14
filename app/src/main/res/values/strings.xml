@@ -5,4 +5,5 @@
     <string name="delivery_details">Delivery Details</string>
     <string name="img_dsc">img dsc</string>
     <string name="customer">Customer</string>
+    <string name="make_active">Make Active</string>
 </resources>

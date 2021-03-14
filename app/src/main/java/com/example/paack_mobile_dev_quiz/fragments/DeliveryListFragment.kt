@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +19,8 @@ import com.example.paack_mobile_dev_quiz.adapters.DeliveryListAdapter
 import com.example.paack_mobile_dev_quiz.networking.*
 import com.example.paack_mobile_dev_quiz.viewmodels.MainViewModel
 import com.example.paack_mobile_dev_quiz.viewmodels.MainViewModelFactory
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_delivery_list.*
 
@@ -50,16 +53,21 @@ class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
             it.let { resource ->
                 when(resource.status) {
                     Status.SUCCESS -> {
-                        
+                        if (!resource.data.isNullOrEmpty()) {
+                            initRecyclerView(resource.data)
+                        }
                     }
-                    Status.ERROR -> {  }
+                    Status.ERROR -> {
+                        Snackbar.make(constraintLayout, resource.message ?: "A problem occurred",
+                            BaseTransientBottomBar.LENGTH_SHORT).show()
+                    }
                     Status.LOADING -> {  }
                 }
             }
         })
     }
 
-    private fun onDeliveryItemSelected(deliveryId: String) {
+    private fun onDeliveryItemSelected(deliveryId: Int) {
         val bundle = bundleOf(Constants.DELIVERY_ID_KEY to deliveryId)
         findNavController().navigate(R.id.action_deliveryListFragment_to_deliveryDetailsFragment, bundle)
     }

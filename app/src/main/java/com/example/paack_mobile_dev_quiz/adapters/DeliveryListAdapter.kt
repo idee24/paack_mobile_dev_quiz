@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.delivery_item.view.*
  *@Created by Yerimah on 3/12/2021.
  */
 
-class DeliveryListAdapter(private val deliveries: List<Delivery>, private val callback: (String) -> Unit):
+class DeliveryListAdapter(private val deliveries: List<Delivery>, private val callback: (Int) -> Unit):
     RecyclerView.Adapter<DeliveryListAdapter.DeliveryListVewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeliveryListVewHolder {
@@ -26,7 +26,7 @@ class DeliveryListAdapter(private val deliveries: List<Delivery>, private val ca
             holder.nameTextView.text = delivery.customer_name
             holder.addressTextView.text = delivery.address
             holder.idTextView.text = delivery.id.toString()
-            holder.itemView.setOnClickListener { callback(delivery.id.toString()) }
+            holder.itemView.setOnClickListener { callback(delivery.id ?: 0) }
         }
     }
 

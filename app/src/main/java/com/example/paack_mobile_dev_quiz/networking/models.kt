@@ -11,7 +11,8 @@ data class Delivery(
         var latitude: Double?,
         var customer_name: String?,
         var requires_signature: Boolean?,
-        var special_instructions: String?
+        var special_instructions: String?,
+        var timestamp: Long?
 )
 
 data class DeliveryUpdate(

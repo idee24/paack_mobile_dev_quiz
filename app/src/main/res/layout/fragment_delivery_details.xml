@@ -260,13 +260,12 @@
 
                 <Button
                     android:id="@+id/raiseButton"
-                    android:text="@string/raise_issue"
+                    android:text="@string/make_active"
                     android:fontFamily="@font/sfpro_bold"
                     android:layout_marginEnd="@dimen/twenty_four_dp"
                     android:layout_marginTop="@dimen/thirty_two_dp"
                     android:layout_marginStart="@dimen/twenty_four_dp"
                     android:layout_marginBottom="@dimen/three_hundred_and_fifty_dp"
-                    style="@style/button_blue"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/sixty_dp"/>
 

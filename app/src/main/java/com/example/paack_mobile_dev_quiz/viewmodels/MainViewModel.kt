@@ -18,7 +18,7 @@ class MainViewModel(private val apiService: ApiService): ViewModel() {
     fun getDeliveries() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            Resource.success(data = apiService.getDeliveries())
+            emit(Resource.success(data = apiService.getDeliveries()))
         }
         catch (e: Exception) {
             emit(Resource.error(data = null, message = e.message ?: "A problem occurred"))
@@ -28,7 +28,7 @@ class MainViewModel(private val apiService: ApiService): ViewModel() {
     fun getDeliveryDetails(deliveryId: Int) = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
-            Resource.success(data = apiService.getDeliveryDetails(deliveryId))
+            emit(Resource.success(data = apiService.getDeliveryDetails(deliveryId)))
         }
         catch (e: Exception) {
             emit(Resource.error(data = null, message = e.message ?: "A problem occurred"))

@@ -13,20 +13,25 @@ import android.os.*
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import com.example.paack_mobile_dev_quiz.R
+import com.example.paack_mobile_dev_quiz.networking.*
 import com.google.android.gms.location.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.util.*
 
 /**
  *@Created by Yerimah on 3/12/2021.
  */
-class LocationUpdateService(): Service() {
+class DeliveryUpdateService: Service() {
 
     private val servicePackageName = "com.google.android.gms.location.sample.locationupdatesforegroundservice"
     private val channelId = "location_channel"
-    private val tag = LocationUpdateService::class.java.simpleName
+    private val tag = DeliveryUpdateService::class.java.simpleName
     private val actionBroadcast: String = "$servicePackageName.broadcast"
     private val extraLocation: String = "$servicePackageName.location"
     private val extraStartedFromNotification: String = "$servicePackageName.started_from_notification"
-    private val updateIntervalMS: Long = 30000
+    private val updateIntervalMS: Long = 10000
     private val fastIntervalMS = updateIntervalMS / 2
 
     private val notificationId = 12345678
@@ -49,9 +54,10 @@ class LocationUpdateService(): Service() {
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
-                updateLocation(locationResult.lastLocation)
+                updateDelivery(locationResult.lastLocation)
             }
         }
+        println("DDLS Service Started")
         locationRequest = LocationRequest()
         locationRequest.interval = updateIntervalMS
         locationRequest.fastestInterval = fastIntervalMS
@@ -75,7 +81,7 @@ class LocationUpdateService(): Service() {
         }
         fusedLocationClient.lastLocation.addOnSuccessListener {
             if (it != null) {
-                updateLocation(it)
+                updateDelivery(it)
             }
         }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
@@ -98,9 +104,7 @@ class LocationUpdateService(): Service() {
     }
 
     fun requestLocationUpdates() {
-
-        startService(Intent(applicationContext, LocationUpdateService::class.java))
-
+        startService(Intent(applicationContext, DeliveryUpdateService::class.java))
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {
@@ -133,15 +137,15 @@ class LocationUpdateService(): Service() {
     }
 
     private fun getNotification(): Notification? {
-        val intent = Intent(this, LocationUpdateService::class.java)
+        val intent = Intent(this, DeliveryUpdateService::class.java)
         intent.putExtra(extraStartedFromNotification, true)
 
         val builder = NotificationCompat.Builder(this, channelId)
-        builder.setContentText("Location Service Running")
+        builder.setContentText("Delivery Service Running")
         builder.setContentTitle("Location")
         builder.setOngoing(true)
         builder.setSmallIcon(R.mipmap.ic_launcher)
-        builder.setTicker("Location Service Running")
+        builder.setTicker("Delivery Service Running")
         builder.setWhen(System.currentTimeMillis())
         return builder.build()
     }
@@ -152,26 +156,23 @@ class LocationUpdateService(): Service() {
      * clients, we don't need to deal with IPC.
      */
     class LocalBinder : Binder() {
-        val service: LocationUpdateService
-            get() = LocationUpdateService()
+        val service: DeliveryUpdateService
+            get() = DeliveryUpdateService()
     }
 
-    private fun updateLocation(location: Location) {
+    private fun updateDelivery(location: Location) {
         val intent = Intent(actionBroadcast)
         intent.putExtra(extraLocation, location)
         notificationManager.notify(notificationId, getNotification())
 
-//        val payload = LocationPayload(location.latitude, location.longitude)
-//        DataManagementUtils.currentRiderInfo.latitude = location.latitude
-//        DataManagementUtils.currentRiderInfo.longitude = location.longitude
-//        location.bearing
-//
-//        val call = ApiClient.apiClient(Routes.BASE_URL).create(MainService::class.java).updateLocation(
-//            Routes.UPDATE_RIDER_LOCATION + getUserId(), getDeviceToken(), payload)
-//        call.enqueue(object : Callback<StatusResponse> {
-//            override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) { }
-//            override fun onFailure(call: Call<StatusResponse>, t: Throwable) { t.printStackTrace() }
-//        })
+
+        println("DDLS Service Update Fired")
+        val updatePayload = DeliveryUpdate(location.latitude, location.longitude, getBatteryLevel(baseContext), Date().time)
+        val call = ApiClient.apiClient(Routes.BASE_URL).create(ApiService::class.java).updateDeliveryDetails(updatePayload)
+        call.enqueue(object : Callback<StatusResponse> {
+            override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) { }
+            override fun onFailure(call: Call<StatusResponse>, t: Throwable) { t.printStackTrace() }
+        })
 
 
     }

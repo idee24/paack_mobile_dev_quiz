@@ -31,6 +31,7 @@ class MainViewModel(private val apiService: ApiService): ViewModel() {
             emit(Resource.success(data = apiService.getDeliveryDetails(deliveryId)))
         }
         catch (e: Exception) {
+            e.printStackTrace()
             emit(Resource.error(data = null, message = e.message ?: "A problem occurred"))
         }
     }

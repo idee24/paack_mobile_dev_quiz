@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "207873247612",
+    "project_id": "paack-dev-quiz",
+    "storage_bucket": "paack-dev-quiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:207873247612:android:b3c4d8cafdbf2fcd163cf9",
+        "android_client_info": {
+          "package_name": "com.example.paack_mobile_dev_quiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "207873247612-fbr56u5n5bvcieqh116d9mv3t5s9uav0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.paack_mobile_dev_quiz",
+            "certificate_hash": "566b75fb64768bdcaff5723f3df7ead735c950eb"
+          }
+        },
+        {
+          "client_id": "207873247612-t88hu2fsf1ne1tue5s4uohqk05r3j1ft.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3kldYjPC7K787nJ9CfrdaSwP0DjLsIbw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "207873247612-t88hu2fsf1ne1tue5s4uohqk05r3j1ft.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

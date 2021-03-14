@@ -5,8 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
+import com.example.paack_mobile_dev_quiz.Constants
 import com.example.paack_mobile_dev_quiz.MainActivity
 import com.example.paack_mobile_dev_quiz.R
+import kotlinx.android.synthetic.main.fragment_delivery_details.*
 
 /**
  *@Created by Yerimah on 3/12/2021.
@@ -21,5 +24,7 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        backIcon.setOnClickListener { findNavController().popBackStack() }
+        val deliveryId = arguments?.getString(Constants.DELIVERY_ID_KEY)
     }
 }

@@ -9,4 +9,5 @@ import android.view.Display
  */
 object Constants {
 
+    const val DELIVERY_ID_KEY = "delivery_id"
 }

@@ -9,7 +9,12 @@
         android:id="@+id/deliveryDetailsFragment"
         android:name="com.example.paack_mobile_dev_quiz.fragments.DeliveryDetailsFragment"
         android:label="fragment_delivery_details"
-        tools:layout="@layout/fragment_delivery_details" />
+        tools:layout="@layout/fragment_delivery_details" >
+        <argument
+            android:name="delivery_id"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
     <fragment
         android:id="@+id/deliveryListFragment"
         android:name="com.example.paack_mobile_dev_quiz.fragments.DeliveryListFragment"

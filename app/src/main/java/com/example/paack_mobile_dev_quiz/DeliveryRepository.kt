@@ -1,4 +1,4 @@
-package com.example
+package com.example.paack_mobile_dev_quiz
 
 import androidx.lifecycle.liveData
 import com.example.paack_mobile_dev_quiz.networking.ApiService

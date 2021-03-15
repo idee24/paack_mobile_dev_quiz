@@ -2,7 +2,7 @@ package com.example.paack_mobile_dev_quiz.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.DeliveryRepository
+import com.example.paack_mobile_dev_quiz.DeliveryRepository
 import com.example.paack_mobile_dev_quiz.networking.ApiService
 import com.example.paack_mobile_dev_quiz.networking.Delivery
 import com.example.paack_mobile_dev_quiz.networking.Resource

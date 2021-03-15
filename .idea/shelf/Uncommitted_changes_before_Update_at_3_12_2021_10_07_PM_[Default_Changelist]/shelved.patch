@@ -1,0 +1,508 @@
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id 'com.android.application'\r\n    id 'kotlin-android'\r\n}\r\n\r\nandroid {\r\n    compileSdkVersion 30\r\n\r\n    defaultConfig {\r\n        applicationId \"com.example.paack_mobile_dev_quiz\"\r\n        minSdkVersion 23\r\n        targetSdkVersion 30\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n    compileOptions {\r\n        sourceCompatibility JavaVersion.VERSION_1_8\r\n        targetCompatibility JavaVersion.VERSION_1_8\r\n    }\r\n    kotlinOptions {\r\n        jvmTarget = '1.8'\r\n    }\r\n}\r\n\r\ndependencies {\r\n\r\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version\"\r\n    implementation 'androidx.core:core-ktx:1.3.2'\r\n    implementation 'androidx.appcompat:appcompat:1.2.0'\r\n    implementation 'com.google.android.material:material:1.3.0'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'\r\n    testImplementation 'junit:junit:4.13.2'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\r\n\r\n    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.4'\r\n    implementation 'androidx.navigation:navigation-ui-ktx:2.3.4'\r\n\r\n    implementation 'com.pixplicity.easyprefs:library:1.9.0'\r\n\r\n    implementation 'com.google.android.material:material:1.3.0'\r\n    implementation 'com.google.android.material:material:1.3.0'\r\n    implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'\r\n\r\n    implementation 'com.squareup.retrofit2:retrofit:2.9.0'\r\n    implementation 'com.google.code.gson:gson:2.8.6'\r\n    implementation 'com.squareup.retrofit2:converter-gson:2.6.2'\r\n    implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'\r\n\r\n    implementation 'androidx.legacy:legacy-support-v4:1.0.0'\r\n    implementation 'androidx.preference:preference-ktx:1.1.1'\r\n    implementation 'com.squareup.retrofit2:converter-scalars:2.6.2'\r\n\r\n    implementation 'com.github.bumptech.glide:glide:4.9.0'\r\n    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'\r\n    implementation 'androidx.recyclerview:recyclerview:1.1.0'\r\n    implementation 'androidx.cardview:cardview:1.0.0'\r\n    implementation 'androidx.legacy:legacy-support-core-ui:1.0.0'\r\n    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'\r\n    implementation 'me.relex:circleindicator:1.2.2'\r\n\r\n    //LifeCycle\r\n    implementation 'androidx.lifecycle:lifecycle-common:2.3.0'\r\n    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0'\r\n    implementation 'android.arch.lifecycle:extensions:2.2.0'\r\n    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'\r\n\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision eabac08c3990a006909f139ed2a95e60ebf86ce0)
++++ app/build.gradle	(date 1615582422675)
+@@ -1,6 +1,7 @@
+ plugins {
+     id 'com.android.application'
+     id 'kotlin-android'
++    id 'com.google.gms.google-services'
+ }
+ 
+ android {
+@@ -68,10 +69,14 @@
+     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+     implementation 'me.relex:circleindicator:1.2.2'
+ 
+-    //LifeCycle
+     implementation 'androidx.lifecycle:lifecycle-common:2.3.0'
+     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0'
+     implementation 'android.arch.lifecycle:extensions:2.2.0'
+     implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.3.0'
+ 
++    implementation 'com.google.android.libraries.places:places:2.4.0'
++    implementation 'com.google.android.gms:play-services-location:18.0.0'
++
++    implementation platform('com.google.firebase:firebase-bom:26.7.0')
++    implementation 'com.google.firebase:firebase-analytics-ktx'
+ }
+\ No newline at end of file
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\r\nbuildscript {\r\n    ext.kotlin_version = \"1.4.30\"\r\n    repositories {\r\n        google()\r\n        jcenter()\r\n    }\r\n    dependencies {\r\n        classpath \"com.android.tools.build:gradle:4.1.2\"\r\n        classpath \"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version\"\r\n        classpath \"androidx.navigation:navigation-safe-args-gradle-plugin:2.3.4\"\r\n        // NOTE: Do not place your application dependencies here; they belong\r\n        // in the individual module build.gradle files\r\n    }\r\n}\r\n\r\nallprojects {\r\n    repositories {\r\n        google()\r\n        jcenter()\r\n        maven {\r\n            url \"https://jitpack.io\"\r\n        }\r\n    }\r\n}\r\n\r\ntask clean(type: Delete) {\r\n    delete rootProject.buildDir\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- build.gradle	(revision eabac08c3990a006909f139ed2a95e60ebf86ce0)
++++ build.gradle	(date 1615582343354)
+@@ -4,10 +4,12 @@
+     repositories {
+         google()
+         jcenter()
++        maven { url 'https://maven.fabric.io/public' }
+     }
+     dependencies {
+         classpath "com.android.tools.build:gradle:4.1.2"
+         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
++        classpath 'com.google.gms:google-services:4.3.5'
+         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:2.3.4"
+         // NOTE: Do not place your application dependencies here; they belong
+         // in the individual module build.gradle files
+@@ -21,6 +23,9 @@
+         maven {
+             url "https://jitpack.io"
+         }
++        maven {
++            url 'https://maven.google.com'
++        }
+     }
+ }
+ 
+Index: app/src/main/java/com/example/paack_mobile_dev_quiz/utils/App.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/paack_mobile_dev_quiz/utils/App.kt	(date 1615581327065)
++++ app/src/main/java/com/example/paack_mobile_dev_quiz/utils/App.kt	(date 1615581327065)
+@@ -0,0 +1,23 @@
++package com.example.paack_mobile_dev_quiz.utils
++
++import android.app.Application
++import android.content.ContextWrapper
++import com.pixplicity.easyprefs.library.Prefs
++
++/**
++ *@Created by Yerimah on 3/12/2021.
++ */
++
++class App: Application() {
++
++    override fun onCreate() {
++        super.onCreate()
++        Prefs.Builder()
++            .setContext(this)
++            .setMode(ContextWrapper.MODE_PRIVATE)
++            .setPrefsName(packageName)
++            .setUseDefaultSharedPreference(true)
++            .build()
++
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Status.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Status.kt	(date 1615582801619)
++++ app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Status.kt	(date 1615582801619)
+@@ -0,0 +1,10 @@
++package com.example.paack_mobile_dev_quiz.networking
++
++/**
++ *Created by Yerimah on 12/22/2020.
++ */
++enum class Status {
++    SUCCESS,
++    ERROR,
++    LOADING
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Resource.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Resource.kt	(date 1615582801691)
++++ app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Resource.kt	(date 1615582801691)
+@@ -0,0 +1,12 @@
++package com.example.paack_mobile_dev_quiz.networking
++
++/**
++ *Created by Yerimah on 12/22/2020.
++ */
++data class Resource<out T>(val status: Status, val data: T?, val message: String?) {
++    companion object{
++        fun<T> success(data:T): Resource<T> = Resource(status= Status.SUCCESS,data = data,message = null)
++        fun<T> error(data:T?,message: String?): Resource<T> = Resource(status= Status.ERROR,data = data,message = message)
++        fun<T> loading(data:T?): Resource<T> = Resource(status= Status.LOADING,data = data,message = null)
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/paack_mobile_dev_quiz/utils/LocationUpdateService.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/paack_mobile_dev_quiz/utils/LocationUpdateService.kt	(date 1615582422683)
++++ app/src/main/java/com/example/paack_mobile_dev_quiz/utils/LocationUpdateService.kt	(date 1615582422683)
+@@ -0,0 +1,178 @@
++package com.example.paack_mobile_dev_quiz.utils
++
++import android.Manifest
++import android.app.Notification
++import android.app.NotificationChannel
++import android.app.NotificationManager
++import android.app.Service
++import android.content.Intent
++import android.content.pm.PackageManager
++import android.content.res.Configuration
++import android.location.Location
++import android.os.*
++import androidx.core.app.ActivityCompat
++import androidx.core.app.NotificationCompat
++import com.example.paack_mobile_dev_quiz.R
++import com.google.android.gms.location.*
++
++/**
++ *@Created by Yerimah on 3/12/2021.
++ */
++class LocationUpdateService(): Service() {
++
++    private val servicePackageName = "com.google.android.gms.location.sample.locationupdatesforegroundservice"
++    private val channelId = "location_channel"
++    private val tag = LocationUpdateService::class.java.simpleName
++    private val actionBroadcast: String = "$servicePackageName.broadcast"
++    private val extraLocation: String = "$servicePackageName.location"
++    private val extraStartedFromNotification: String = "$servicePackageName.started_from_notification"
++    private val updateIntervalMS: Long = 30000
++    private val fastIntervalMS = updateIntervalMS / 2
++
++    private val notificationId = 12345678
++    private var changingConfiguration = false
++    private lateinit var notificationManager: NotificationManager
++    private val binder = LocalBinder()
++
++    private lateinit var locationRequest: LocationRequest
++    private lateinit var fusedLocationClient: FusedLocationProviderClient
++    private lateinit var locationCallback: LocationCallback
++
++    lateinit var  serviceHandler: Handler
++    lateinit var broadcast: Intent
++
++
++    override fun onCreate() {
++        super.onCreate()
++        broadcast = Intent()
++        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
++        locationCallback = object : LocationCallback() {
++            override fun onLocationResult(locationResult: LocationResult?) {
++                locationResult ?: return
++                updateLocation(locationResult.lastLocation)
++            }
++        }
++        locationRequest = LocationRequest()
++        locationRequest.interval = updateIntervalMS
++        locationRequest.fastestInterval = fastIntervalMS
++        locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
++
++        val handlerThread = HandlerThread(tag)
++        handlerThread.start()
++        serviceHandler = Handler(handlerThread.looper)
++        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
++
++        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
++            val channel = NotificationChannel(channelId, getString(R.string.app_name), NotificationManager.IMPORTANCE_DEFAULT)
++            notificationManager.createNotificationChannel(channel)
++        }
++
++
++        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
++            != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
++                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
++            return
++        }
++        fusedLocationClient.lastLocation.addOnSuccessListener {
++            if (it != null) {
++                updateLocation(it)
++            }
++        }
++        fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
++    }
++
++    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
++        val startedFromNotification = intent!!.getBooleanExtra(extraStartedFromNotification, false)
++        if (startedFromNotification) {
++            removeLocationUpdates()
++            stopSelf()
++        }
++        return START_NOT_STICKY
++    }
++
++    fun removeLocationUpdates() {
++        try {
++            fusedLocationClient.removeLocationUpdates(locationCallback)
++            stopSelf()
++        } catch (e: SecurityException) {}
++    }
++
++    fun requestLocationUpdates() {
++
++        startService(Intent(applicationContext, LocationUpdateService::class.java))
++
++    }
++
++    override fun onConfigurationChanged(newConfig: Configuration) {
++        super.onConfigurationChanged(newConfig)
++        changingConfiguration = true
++    }
++
++    override fun onBind(intent: Intent?): IBinder {
++        stopForeground(true)
++        changingConfiguration = false
++        return binder
++    }
++
++    override fun onRebind(intent: Intent?) {
++        stopForeground(true)
++        changingConfiguration = false
++        super.onRebind(intent)
++    }
++
++    override fun onUnbind(intent: Intent?): Boolean {
++        if (changingConfiguration) {
++            startForeground(notificationId, getNotification())
++        }
++        return true
++    }
++
++    override fun onDestroy() {
++        removeLocationUpdates()
++        serviceHandler.removeCallbacksAndMessages(null)
++    }
++
++    private fun getNotification(): Notification? {
++        val intent = Intent(this, LocationUpdateService::class.java)
++        intent.putExtra(extraStartedFromNotification, true)
++
++        val builder = NotificationCompat.Builder(this, channelId)
++        builder.setContentText("Location Service Running")
++        builder.setContentTitle("Location")
++        builder.setOngoing(true)
++        builder.setSmallIcon(R.mipmap.ic_launcher)
++        builder.setTicker("Location Service Running")
++        builder.setWhen(System.currentTimeMillis())
++        return builder.build()
++    }
++
++
++    /**
++     * Class used for the client Binder.  Since this service runs in the same process as its
++     * clients, we don't need to deal with IPC.
++     */
++    class LocalBinder : Binder() {
++        val service: LocationUpdateService
++            get() = LocationUpdateService()
++    }
++
++    private fun updateLocation(location: Location) {
++        val intent = Intent(actionBroadcast)
++        intent.putExtra(extraLocation, location)
++        notificationManager.notify(notificationId, getNotification())
++
++//        val payload = LocationPayload(location.latitude, location.longitude)
++//        DataManagementUtils.currentRiderInfo.latitude = location.latitude
++//        DataManagementUtils.currentRiderInfo.longitude = location.longitude
++//        location.bearing
++//
++//        val call = ApiClient.apiClient(Routes.BASE_URL).create(MainService::class.java).updateLocation(
++//            Routes.UPDATE_RIDER_LOCATION + getUserId(), getDeviceToken(), payload)
++//        call.enqueue(object : Callback<StatusResponse> {
++//            override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) { }
++//            override fun onFailure(call: Call<StatusResponse>, t: Throwable) { t.printStackTrace() }
++//        })
++
++
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Params.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Params.kt	(date 1615582801827)
++++ app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Params.kt	(date 1615582801827)
+@@ -0,0 +1,8 @@
++package com.example.paack_mobile_dev_quiz.networking
++
++/**
++ *@Created by Yerimah on 3/12/2021.
++ */
++object Params {
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Routes.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Routes.kt	(date 1615582801701)
++++ app/src/main/java/com/example/paack_mobile_dev_quiz/networking/Routes.kt	(date 1615582801701)
+@@ -0,0 +1,9 @@
++package com.example.paack_mobile_dev_quiz.networking
++
++/**
++ *@Created by Yerimah on 3/12/2021.
++ */
++object Routes {
++
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/paack_mobile_dev_quiz/networking/ApiClient.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/paack_mobile_dev_quiz/networking/ApiClient.kt	(date 1615582801735)
++++ app/src/main/java/com/example/paack_mobile_dev_quiz/networking/ApiClient.kt	(date 1615582801735)
+@@ -0,0 +1,40 @@
++package com.example.paack_mobile_dev_quiz.networking
++
++import com.example.paack_mobile_dev_quiz.BuildConfig
++import com.google.gson.GsonBuilder
++import okhttp3.OkHttpClient
++import okhttp3.logging.HttpLoggingInterceptor
++import retrofit2.Retrofit
++import retrofit2.converter.gson.GsonConverterFactory
++import java.util.concurrent.TimeUnit
++
++/**
++ *Created by Yerimah on 7/14/2019.
++ */
++
++object ApiClient {
++    fun apiClient(baseUrl: String): Retrofit{
++        val gson = GsonBuilder()
++            .setLenient()
++            .create()
++
++        val client = OkHttpClient.Builder()
++            .readTimeout(60, TimeUnit.SECONDS)
++            .connectTimeout(30, TimeUnit.SECONDS)
++            .writeTimeout(60, TimeUnit.SECONDS)
++
++        if (BuildConfig.DEBUG) {
++            val interceptor = HttpLoggingInterceptor()
++            interceptor.level = HttpLoggingInterceptor.Level.BODY
++            client.addInterceptor(interceptor)
++        }
++
++        return Retrofit.Builder()
++            .baseUrl(baseUrl)
++            .client(client.build())
++            .addConverterFactory(GsonConverterFactory.create(gson))
++            .build()
++
++    }
++
++}
+\ No newline at end of file
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"com.example.paack_mobile_dev_quiz\">\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/Theme.Paack_mobile_dev_quiz\">\r\n        <activity android:name=\".MainActivity\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision eabac08c3990a006909f139ed2a95e60ebf86ce0)
++++ app/src/main/AndroidManifest.xml	(date 1615582519531)
+@@ -2,6 +2,7 @@
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+     package="com.example.paack_mobile_dev_quiz">
+ 
++    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+     <application
+         android:allowBackup="true"
+         android:icon="@mipmap/ic_launcher"
+Index: app/src/main/java/com/example/paack_mobile_dev_quiz/adapters/DeliveryListAdapter.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/paack_mobile_dev_quiz/adapters/DeliveryListAdapter.kt	(date 1615581056275)
++++ app/src/main/java/com/example/paack_mobile_dev_quiz/adapters/DeliveryListAdapter.kt	(date 1615581056275)
+@@ -0,0 +1,15 @@
++package com.example.paack_mobile_dev_quiz.adapters
++
++import android.view.View
++import androidx.recyclerview.widget.RecyclerView
++
++/**
++ *@Created by Yerimah on 3/12/2021.
++ */
++
++class DeliveryListAdapter() {
++
++    inner class DeliveryListVewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
++
++    }
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/paack_mobile_dev_quiz/Constants.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/paack_mobile_dev_quiz/Constants.kt	(date 1615582801724)
++++ app/src/main/java/com/example/paack_mobile_dev_quiz/Constants.kt	(date 1615582801724)
+@@ -0,0 +1,12 @@
++package com.example.paack_mobile_dev_quiz
++
++import android.app.Activity
++import android.graphics.Point
++import android.view.Display
++
++/**
++ *@Created by Yerimah on 3/12/2021.
++ */
++object Constants {
++
++}
+\ No newline at end of file
+Index: app/src/main/java/com/example/paack_mobile_dev_quiz/networking/ApiService.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/com/example/paack_mobile_dev_quiz/networking/ApiService.kt	(date 1615582801536)
++++ app/src/main/java/com/example/paack_mobile_dev_quiz/networking/ApiService.kt	(date 1615582801536)
+@@ -0,0 +1,7 @@
++package com.example.paack_mobile_dev_quiz.networking
++
++/**
++ *Created by Yerimah on 3/12/2021.
++ */
++interface ApiService {
++}
+\ No newline at end of file
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"RemoteRepositoriesConfiguration\">\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"central\" />\r\n      <option name=\"name\" value=\"Maven Central repository\" />\r\n      <option name=\"url\" value=\"https://repo1.maven.org/maven2\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"jboss.community\" />\r\n      <option name=\"name\" value=\"JBoss Community repository\" />\r\n      <option name=\"url\" value=\"https://repository.jboss.org/nexus/content/repositories/public/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"BintrayJCenter\" />\r\n      <option name=\"name\" value=\"BintrayJCenter\" />\r\n      <option name=\"url\" value=\"https://jcenter.bintray.com/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"Google\" />\r\n      <option name=\"name\" value=\"Google\" />\r\n      <option name=\"url\" value=\"https://dl.google.com/dl/android/maven2/\" />\r\n    </remote-repository>\r\n    <remote-repository>\r\n      <option name=\"id\" value=\"maven\" />\r\n      <option name=\"name\" value=\"maven\" />\r\n      <option name=\"url\" value=\"https://jitpack.io\" />\r\n    </remote-repository>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/jarRepositories.xml	(revision eabac08c3990a006909f139ed2a95e60ebf86ce0)
++++ .idea/jarRepositories.xml	(date 1615582393773)
+@@ -26,5 +26,10 @@
+       <option name="name" value="maven" />
+       <option name="url" value="https://jitpack.io" />
+     </remote-repository>
++    <remote-repository>
++      <option name="id" value="maven2" />
++      <option name="name" value="maven2" />
++      <option name="url" value="https://maven.google.com" />
++    </remote-repository>
+   </component>
+ </project>
+\ No newline at end of file

@@ -16,6 +16,7 @@ data class Delivery(
 )
 
 data class DeliveryUpdate(
+        var delivery_id: Int?,
         var latitude: Double?,
         var longitude: Double?,
         var battery_level: Int?,

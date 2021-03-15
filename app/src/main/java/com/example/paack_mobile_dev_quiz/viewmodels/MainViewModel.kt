@@ -1,38 +1,27 @@
 package com.example.paack_mobile_dev_quiz.viewmodels
 
-import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
+import com.example.DeliveryRepository
 import com.example.paack_mobile_dev_quiz.networking.ApiService
+import com.example.paack_mobile_dev_quiz.networking.Delivery
 import com.example.paack_mobile_dev_quiz.networking.Resource
-import kotlinx.coroutines.Dispatchers
-import okhttp3.Dispatcher
-import java.lang.Exception
+
 
 /**
  *@Created by Yerimah on 3/14/2021.
  */
 
-class MainViewModel(private val apiService: ApiService): ViewModel() {
+class MainViewModel(apiService: ApiService): ViewModel() {
 
-    fun getDeliveries() = liveData(Dispatchers.IO) {
-        emit(Resource.loading(data = null))
-        try {
-            emit(Resource.success(data = apiService.getDeliveries()))
-        }
-        catch (e: Exception) {
-            emit(Resource.error(data = null, message = e.message ?: "A problem occurred"))
-        }
+    private val deliveryRepository = DeliveryRepository(apiService)
+
+    fun getDeliveries(): LiveData<Resource<List<Delivery>>> {
+        return deliveryRepository.getDeliveries()
     }
 
-    fun getDeliveryDetails(deliveryId: Int) = liveData(Dispatchers.IO) {
-        emit(Resource.loading(data = null))
-        try {
-            emit(Resource.success(data = apiService.getDeliveryDetails(deliveryId)))
-        }
-        catch (e: Exception) {
-            e.printStackTrace()
-            emit(Resource.error(data = null, message = e.message ?: "A problem occurred"))
-        }
+    fun getDeliveryDetails(deliveryId: Int): LiveData<Resource<Delivery>> {
+        return deliveryRepository.getDeliveryDetails(deliveryId)
     }
+
 }

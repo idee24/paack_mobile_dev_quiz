@@ -45,6 +45,7 @@ class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        context.setTitle("Deliveries")
         getDeliveries()
     }
 

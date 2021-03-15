@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.pixplicity.easyprefs.library.Prefs
 import kotlinx.android.synthetic.main.fragment_delivery_details.*
 import kotlinx.android.synthetic.main.fragment_delivery_details.constraintLayout
 
@@ -58,6 +59,7 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        context.setTitle("Delivery Details")
         mapView = childFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
         mapView.getMapAsync(this)
         val deliveryId = arguments?.getInt(Constants.DELIVERY_ID_KEY)
@@ -114,7 +116,9 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
         activeButton.setOnClickListener {
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                startDeliveryService()
+
+                    Prefs.putInt(Constants.DELIVERY_ID_KEY, delivery.id ?: 0)
+                    startDeliveryService()
             }
             else {
                 requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION,  Manifest.permission.ACCESS_COARSE_LOCATION), Constants.LOCATION_REQUEST_CODE)
@@ -175,7 +179,6 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
             context.unbindService(serviceConnection)
             isBound = false
         }
-        deliveryService?.removeLocationUpdates()
         val manager = context.getSystemService(AppCompatActivity.NOTIFICATION_SERVICE) as NotificationManager
         manager.cancelAll()
     }
@@ -194,7 +197,7 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
                     locationException.startResolutionForResult(context, Constants.LOCATION_REQUEST_CODE)
                 } catch (senderException: IntentSender.SendIntentException) {
                     senderException.printStackTrace()
-                    showErrorMessage(context, "Please enable location setting to use your current address.",
+                    showErrorMessage(context, "Please enable location setting to use your this service.",
                             constraintLayout, "RETRY") {displayLocationSettingsRequest()}
                 }
             }

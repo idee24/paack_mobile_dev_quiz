@@ -17,6 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -24,21 +25,25 @@ import java.util.*
  */
 class DeliveryUpdateService : Service() {
 
-    private val updateIntervalMS: Long = 10000
+    private val tag = DeliveryUpdateService::class.java.simpleName
+    private val updateIntervalMS: Long = 1000
+    private val fastInterval = updateIntervalMS / 2
     private var changingConfiguration = false
     private val binder = LocalBinder()
-
     private lateinit var locationRequest: LocationRequest
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var locationCallback: LocationCallback
 
     lateinit var  serviceHandler: Handler
     lateinit var broadcast: Intent
-
+    val trackingList = ArrayList<DeliveryUpdate>()
 
     override fun onCreate() {
         super.onCreate()
         broadcast = Intent()
+        val handlerThread = HandlerThread(tag)
+        handlerThread.start()
+        serviceHandler = Handler(handlerThread.looper)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
@@ -48,6 +53,7 @@ class DeliveryUpdateService : Service() {
         }
         locationRequest = LocationRequest()
         locationRequest.interval = updateIntervalMS
+        locationRequest.fastestInterval = fastInterval
         locationRequest.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
 
@@ -56,12 +62,8 @@ class DeliveryUpdateService : Service() {
                         Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return
         }
-        fusedLocationClient.lastLocation.addOnSuccessListener {
-            if (it != null) {
-                updateDelivery(it)
-            }
-        }
         fusedLocationClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper())
+        scheduleUpdates()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -98,6 +100,8 @@ class DeliveryUpdateService : Service() {
 
     override fun onDestroy() {
         removeLocationUpdates()
+        updateTimer.cancel()
+        updateTimer.purge()
         serviceHandler.removeCallbacksAndMessages(null)
     }
 
@@ -108,12 +112,25 @@ class DeliveryUpdateService : Service() {
     }
 
     private fun updateDelivery(location: Location) {
+        trackingList.add(DeliveryUpdate(location.latitude, location.longitude, getBatteryLevel(baseContext), Date().time))
+    }
 
-        val updatePayload = DeliveryUpdate(Prefs.getInt(Constants.DELIVERY_ID_KEY, 0),
-                location.latitude, location.longitude, getBatteryLevel(baseContext), Date().time)
-        val call = ApiClient.apiClient(Routes.BASE_URL).create(ApiService::class.java).updateDeliveryDetails(updatePayload)
+    var updateTimer = Timer()
+    private fun scheduleUpdates() {
+        updateTimer.schedule(object : TimerTask() {
+            override fun run() {
+                sendUpdate()
+            }
+        }, 10000, 10000)
+    }
+
+    private fun sendUpdate() {
+
+        val payload = DeliveryUpdatePayload(Prefs.getInt(Constants.DELIVERY_ID_KEY, 0), trackingList)
+        val call = ApiClient.apiClient(Routes.BASE_URL).create(ApiService::class.java).updateDeliveryDetails(payload)
         call.enqueue(object : Callback<StatusResponse> {
             override fun onResponse(call: Call<StatusResponse>, response: Response<StatusResponse>) {
+                trackingList.clear()
                 val handler = Handler(Looper.getMainLooper())
                 handler.post { Toast.makeText(this@DeliveryUpdateService,
                         "Delivery Updated", Toast.LENGTH_SHORT).show() }
@@ -123,7 +140,5 @@ class DeliveryUpdateService : Service() {
                 t.printStackTrace()
             }
         })
-
-
     }
 }

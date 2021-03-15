@@ -1,5 +1,7 @@
 package com.example.paack_mobile_dev_quiz.networking
 
+import java.util.*
+
 /**
  *Created by Yerimah on 3/13/2021.
  */
@@ -16,16 +18,15 @@ data class Delivery(
 )
 
 data class DeliveryUpdate(
-        var delivery_id: Int?,
         var latitude: Double?,
         var longitude: Double?,
         var battery_level: Int?,
         var timestamp: Long?
 )
 
-data class DeliveryDetails(
-        var driver_id: Int?,
-        var tracking_data: List<DeliveryUpdate>?
+data class DeliveryUpdatePayload(
+        var driver_id: Int? = 0,
+        var tracking_data: List<DeliveryUpdate>? = LinkedList()
 )
 
 data class StatusResponse(

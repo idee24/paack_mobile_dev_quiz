@@ -135,12 +135,6 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
         }
     }
 
-
-    override fun onPause() {
-        super.onPause()
-        stopService()
-    }
-
     override fun onMapReady(googleMap: GoogleMap?) {
         if (googleMap != null) {
             gMap = googleMap

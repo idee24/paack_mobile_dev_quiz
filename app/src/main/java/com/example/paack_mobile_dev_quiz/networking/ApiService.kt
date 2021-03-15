@@ -18,5 +18,5 @@ interface ApiService {
     suspend fun getDeliveryDetails(@Query("delivery_id") deliveryId: Int): Delivery
 
     @POST(Routes.TRACKING_END_POINT)
-    fun updateDeliveryDetails(@Body payload: DeliveryUpdate): Call<StatusResponse>
+    fun updateDeliveryDetails(@Body payload: DeliveryUpdatePayload): Call<StatusResponse>
 }

@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.pixplicity.easyprefs.library.Prefs
+import kotlinx.android.synthetic.main.app_loader.*
 import kotlinx.android.synthetic.main.fragment_delivery_details.*
 import kotlinx.android.synthetic.main.fragment_delivery_details.constraintLayout
 
@@ -76,6 +77,7 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
             it.let { resource ->
                 when (resource.status) {
                     Status.SUCCESS -> {
+                        showLoader(false, appLoader, context)
                         resource.data.let { delivery ->
                             if (delivery != null) {
                                 initViews(delivery)
@@ -83,11 +85,12 @@ class DeliveryDetailsFragment : Fragment(R.layout.fragment_delivery_details), On
                         }
                     }
                     Status.ERROR -> {
+                        showLoader(false, appLoader, context)
                         Snackbar.make(constraintLayout, resource.message ?: "A problem occurred",
                             BaseTransientBottomBar.LENGTH_SHORT).show()
                     }
                     Status.LOADING -> {
-
+                        showLoader(true, appLoader, context)
                     }
                 }
             }

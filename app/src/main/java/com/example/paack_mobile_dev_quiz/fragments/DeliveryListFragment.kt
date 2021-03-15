@@ -17,11 +17,13 @@ import com.example.paack_mobile_dev_quiz.MainActivity
 import com.example.paack_mobile_dev_quiz.R
 import com.example.paack_mobile_dev_quiz.adapters.DeliveryListAdapter
 import com.example.paack_mobile_dev_quiz.networking.*
+import com.example.paack_mobile_dev_quiz.utils.showLoader
 import com.example.paack_mobile_dev_quiz.viewmodels.MainViewModel
 import com.example.paack_mobile_dev_quiz.viewmodels.MainViewModelFactory
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
+import kotlinx.android.synthetic.main.app_loader.*
 import kotlinx.android.synthetic.main.fragment_delivery_list.*
 
 /**
@@ -54,15 +56,17 @@ class DeliveryListFragment : Fragment(R.layout.fragment_delivery_list) {
             it.let { resource ->
                 when(resource.status) {
                     Status.SUCCESS -> {
+                        showLoader(false, appLoader, context)
                         if (!resource.data.isNullOrEmpty()) {
                             initRecyclerView(resource.data)
                         }
                     }
                     Status.ERROR -> {
+                        showLoader(false, appLoader, context)
                         Snackbar.make(constraintLayout, resource.message ?: "A problem occurred",
                             BaseTransientBottomBar.LENGTH_SHORT).show()
                     }
-                    Status.LOADING -> {  }
+                    Status.LOADING -> { showLoader(true, appLoader, context) }
                 }
             }
         })

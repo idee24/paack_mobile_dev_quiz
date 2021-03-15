@@ -6,7 +6,10 @@ import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.os.BatteryManager
 import android.view.View
+import android.view.WindowManager
+import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.paack_mobile_dev_quiz.R
@@ -70,4 +73,16 @@ fun Fragment.showErrorMessage(context: Context,
     textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_error_outline_black_24dp, 0, 0, 0)
     textView.compoundDrawablePadding = context.resources.getDimensionPixelOffset(R.dimen.four_dp)
     snackBar.show()
+}
+
+fun Fragment.showLoader(showLoader: Boolean, appLoader: RelativeLayout, activity: AppCompatActivity) {
+
+    if (showLoader) {
+        appLoader.visibility = View.VISIBLE
+        activity.window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
+    else {
+        appLoader.visibility = View.GONE
+        activity.window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+    }
 }
